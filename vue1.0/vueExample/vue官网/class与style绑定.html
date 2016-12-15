@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #example{width: 200px;background: yellow}
+        button{width: 90%;margin: 0 auto;background: gray;color: white}
+        .active{background: orange}
+        .hasborder{border: 1px solid black}
+        .hasRadius{border-radius: 5px}
+    </style>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<div id="example" :class="classObject">
+    <!--直接绑定到一个样式对象-->
+    <div :style="styleObject"></div>
+    <!--表示 class active 的更新将取决于数据属性 isActive 是否为真值 。-->
+    <button class="normal" :class="{active:isSubmit}" @click="submit">提交</button>
+</div>
+<script>
+    var vm = new Vue({
+        el:"#example",
+        data:{
+            isSubmit:false,
+            classObject:{
+                hasborder:true,
+                hasRadius:false
+            },
+            styleObject:{
+                background:'red',
+                height:'200px'
+            }
+        },
+        methods:{
+            submit:function () {
+                this.isSubmit=true;
+            }
+        }
+    })
+</script>
+</body>
+</html>

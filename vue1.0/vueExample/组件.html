@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="example">
+    <my-component></my-component>
+    <child msg="hello!" my-message="message"></child>
+</div>
+<script>
+    Vue.component('my-component',{
+        template:'<div> a custom component</div>'
+    });
+    Vue.component('child',{
+        props:['msg','myMessage'],
+        template:'<span>{{ msg }}</span>' +
+        '<p>{{ myMessage }}</p>'
+    });
+    new Vue({
+        el:"#example"
+    });
+
+</script>
+</body>
+
+</html>

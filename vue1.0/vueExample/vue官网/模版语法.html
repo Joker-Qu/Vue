@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+
+<div id="example">
+    <!--Vue.js 允许你自定义过滤器，被用作一些常见的文本格式化-->
+    <h1>{{ title | formatTitle}}</h1>
+    <!--每个绑定都只能包含单个表达式-->
+    <span v-once>This will never change:{{ msg+' world!'}}</span>
+    <!--v-on 指令，它用于监听 DOM 事件-->
+    <button v-on:click="changemsg">change</button>
+    <p v-html="rawHtml"></p>
+    <!--Mustache 不能在 HTML 属性中使用，应使用 v-bind 指令-->
+    <input type="password" v-bind:autofocus="2<1">
+    <!--v-bind 将href属性和url绑 v-bind 指令被用来响应地更新 HTML 属性-->
+    <a v-bind:href="url"></a>
+    <!--v-bind的缩写-->
+    <a :href="url"></a>
+    <!--e-->
+    <a v-on:click.prevent="go"></a>
+    <!--v-on的缩写-->
+    <a @click.prevent="go"></a>
+</div>
+<script>
+    var vm1 = new Vue({
+        el:"#example",
+        data:{
+            msg:'hello',
+            rawHtml:'<input type="text" value="user">',
+            url:'http://www.baidu.com',
+            title:'This is a mesage'
+        },
+        methods:{
+            changemsg:function () {
+                this.msg += 'x';
+                console.log(this.msg);
+            },
+            go:function () {
+                alert(1)
+            }
+        },
+        filters:{
+            formatTitle:function (value) {
+                if (!value) return 'Default';
+                var strs= value.split(' ').map(function (item) {
+                    return item.replace(/^\S/,function (s) {
+                        return s.toUpperCase();
+                    })
+                });
+                return strs.join(' ');
+            }
+        }
+    })
+</script>
+</body>
+</html>

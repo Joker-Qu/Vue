@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<ul>
+    <li>因为 JavaScript 的限制，Vue.js 不能检测到下面数组变化</li>
+    <li>直接用索引设置元素，如 vm.items[0] = {}；</li>
+    <li>修改数据的长度，如 vm.items.length = 0</li>
+</ul>：
+<div id="example">
+    <ul>
+        <li v-for="(index,item) in items">
+            {{ index }}---{{ item.message }}
+        </li>
+    </ul>
+    <ul>
+        <!--在遍历对象时，是按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下是一致的。-->
+        <li v-for="(key,value) in user">
+            {{ key }}---{{ value }}
+        </li>
+    </ul>
+    <ul>
+        <template v-for="(index,item) in items">
+            <h3>{{ index }}</h3>
+            <li>{{ item.message }}</li>
+        </template>
+    </ul>
+    <button @click="add">增加一项</button>
+    <button @click="change">设置一项</button>
+</div>
+<script>
+    var vm = new Vue({
+        el:"#example",
+        data:{
+            items:[
+                {message:'html'},
+                {message:'css'},
+                {message:'js'}
+            ],
+            user:{
+                name:'Jack',
+                pwd:'xxxxx177',
+                age:20
+            }
+        },
+        methods:{
+            add:function () {
+                this.items.push({message:'vue.js'})
+            },
+            change:function () {
+                this.items.$set(0,{message:'c'});
+            }
+        }
+    })
+</script>
+</body>
+</html>

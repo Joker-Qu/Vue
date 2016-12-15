@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .fade-transition {
+            transition: opacity .3s ease;
+        }
+        .fade-enter, .fade-leave {
+            opacity: 0;
+        }
+    </style>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="radio" id="one" value="A" v-model="picked" checked="true">
+    <label for="one">A</label>
+    <br>
+    <input type="radio" id="two" value="B" v-model="picked">
+    <label for="two">B</label>
+    <br>
+    <component :is="view" transition="fade" transition-mode="out-in"></component>
+</div>
+<script>
+
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            view:'aview'
+        },
+        components:{
+            aview:{
+                template:"<p>ComponentA</p>"
+            },
+            bview:{
+                template:"<p>ComponentB</p>"
+            }
+        }
+    })
+    vm.$watch('picked',function (val) {
+        this.view = (val== "A" ? 'aview':'bview');
+    })
+</script>
+</body>
+</html>

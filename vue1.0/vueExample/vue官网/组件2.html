@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<!--子组件-->
+<template id="child-template">
+    <input v-model="msg">
+    <button @click="notify">Dispatch Event</button>
+</template>
+<template id="user-profile-template">
+    <p>{{ msg }}<strong>{{ detail }}</strong></p>
+</template>
+<template id="mycomponenttpl">
+    <div>
+        <h1>this is my component!</h1>
+        <!--如果子组件模板只有一个没有特性的 slot，父组件的整个内容将插到 slot 所在的地方并替换它。-->
+        <slot>如果没有分发内容则显示我</slot>
+        <!--具名 slot 将匹配内容片段中有对应 slot 特性的元素。-->
+        <slot name="s1"></slot>
+        <slot name="s2"></slot>
+    </div>
+</template>
+<!--父组件-->
+<div id="events-example">
+    <p>Message:{{ messages | json}}</p>
+    <child @child-msg="handleIt"></child>
+    <!--使用v-ref为子组件指定一个索引-->
+    <userprofile v-ref:profile></userprofile>
+    <mycomponent>
+        <p>填充的内容</p>
+        <p slot="s1">One</p>
+        <p slot="s2">Two</p>
+    </mycomponent>
+    <br>
+    <!--如果把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。为此可以添加一个 keep-alive 指令参数：-->
+    <component :is="currentView" :messages="messages" keep-alive></component>
+</div>
+
+<script>
+    Vue.component('mycomponent',{
+        template:'#mycomponenttpl'
+    });
+    Vue.component('child',{
+        template:'#child-template',
+        data:function () {
+            return {msg:'hello'}
+        },
+        methods:{
+            notify:function () {
+                if (this.msg.trim()){
+                    this.$dispatch('child-msg', this.msg);
+                    this.msg='';
+                }
+            }
+        }
+    });
+    Vue.component('userprofile',{
+        template:'#user-profile-template',
+        data:function () {
+            return {msg:'Hello',detail:'Vue.js'}
+        }
+    });
+    var parent = new Vue({
+        el:"#events-example",
+        data:{
+            messages:[],
+            currentView:'home'
+
+        },
+        components:{
+            home:{
+                props:['messages'],
+                template:'<div>home:{{ messages |json }}</div>'
+            },
+            more:{
+                props:['messages'],
+                template:'<div>more:{{ messages |json }}</div>'
+            }
+        },
+        events:{
+//            'child-msg': function (msg) {
+//                // 事件回调内的 `this` 自动绑定到注册它的实例上
+//
+//            }
+        },
+        methods:{
+            handleIt:function (msg) {
+                this.messages.push(msg)
+            }
+        }
+    });
+    //用索引直接访问子组件
+    var userprofile = parent.$refs.profile;
+    console.log(userprofile.detail);
+
+</script>
+</body>
+</html>

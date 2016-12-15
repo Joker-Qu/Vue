@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{ message }}
+</div>
+<div id="app2">
+    <span v-bind:title="message">Hover your mouse over me for a few seconds to see my dynamically bound title!</span>
+</div>
+<div id="app3">
+    <p v-if="seen">see me</p>
+</div>
+<div id="app4">
+    <ul>
+        <li v-for="todo in todos">{{todo}}</li>
+    </ul>
+</div>
+<div id="app5">
+    <p>{{message}}</p>
+    <button v-on:click="reverse">Reverse Message</button>
+</div>
+<div id="app6">
+    <p>{{message}}</p>
+    <input v-model="message">
+</div>
+<div id="app7">
+    <ol>
+        <todo-item v-for="item in todos" v-bind:todo="item"></todo-item>
+    </ol>
+</div>
+<script>
+    var app = new Vue({
+        el:'#app',
+        data:{message:'Hello Vue!'}
+    });
+    var app2 = new Vue({
+        el:'#app2',
+        data:{message:'You loaded this page on ' + new Date()}
+    });
+    var app3 = new Vue({
+        el:'#app3',
+        data:{seen:true}
+    });
+    var app4 = new Vue({
+        el:'#app4',
+        data:{todos:[1,2,3,4]}
+    });
+    var app5 = new Vue({
+        el:'#app5',
+        data:{message:'Hello Vue!'},
+        methods:{
+            reverse:function () {
+                this.message=this.message.split(' ').reverse().join(' ');
+            }
+        }
+    });
+    var app6 = new Vue({
+        el:'#app6',
+        data:{message:'Hello Vue!'}
+    });
+
+    Vue.component('todo-item',{
+        props:['todo'],
+        template:'<li>{{ todo.text }}</li>'
+    });
+    var app7=new Vue({
+        el:"#app7",
+        data:{todos:[{text:'html'},{text:'css'},{text:'js'}]}
+    })
+</script>
+</body>
+</html>

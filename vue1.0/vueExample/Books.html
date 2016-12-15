@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+    <style>
+        .btn{
+            color: white;
+
+        }
+        .btn-success{
+            background: green;
+        }
+        .btn-danger{
+            background: indianred;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <table>
+        <th @click="sortBy('id')">序号</th>
+        <th @click="sortBy('title')">书名</th>
+        <th @click="sortBy('author')">作者</th>
+        <th @click="sortBy('price')">价格</th>
+
+        <tr v-for="book in books| orderBy sortparam">
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.price }}</td>
+            <template v-if="book.id%2==0">
+                <td> <button @click="delbook(book)" class="btn btn-success">删除</button></td>
+            </template>
+            <template v-else>
+                <td> <button @click="delbook(book)" class="btn btn-danger">删除</button></td>
+            </template>
+
+
+        </tr>
+    </table>
+    <h1>{{ sum }}</h1>
+    <h1>添加书籍</h1>
+    <label for="title">书名</label>
+    <input id="title" type="text" v-model="book.title">
+    <label for="author">作者</label>
+    <input id="author" type="text" v-model="book.author">
+    <label for="price">价格</label>
+    <input id="price" type="text" v-model="book.price">
+    <button @click="addbook">添加书籍</button>
+
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            book:{},
+            books:[],
+            sortparam:''
+        },
+        computed:{
+            sum:function () {
+                var result=0;
+                for(var i=0;i<this.books.length;i++){
+                    result+=Number(this.books[i].price);
+                }
+                return result;
+            }
+        },
+        methods:{
+            addbook:function () {
+                this.book.id=this.books.length+1;
+                if(!this.book.title||!this.book.author||!this.book.price){
+                    alert("请填写完整");
+                    return;
+                }
+                this.books.push(this.book);
+                console.log(this.book);
+                this.book='';
+            },
+            delbook:function (book) {
+                this.books.$remove(book);
+            },
+            sortBy:function (sortParam) {
+                this.sortparam=sortParam;
+            }
+        }
+    })
+</script>
+</body>
+</html>

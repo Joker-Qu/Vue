@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+    <style>
+        #example-3{
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+<!--//v-on监听dom事件-->
+<div id="example">
+    <button v-on:click="greet">Greet</button>
+</div>
+<!--内连javascript-->
+<div id="example-2">
+    <button v-on:click="say('hi')">Say Hi</button>
+    <button v-on:click="say('what')">What</button>
+    <button v-on:click="sayWithEvent('hello',$event)">event</button>
+</div>
+<!--事件修饰符-->
+<div id="example-3" v-on:click="dothis">
+    <!--.stop 修饰 阻止事件冒泡-->
+    <a v-on:click.stop="dothis">111</a>
+    <!--<form v-on;submit.prevent="onSubmit"></form>-->
+    <!--按键修饰符-->
+    <input v-on:keyup.enter="submit">
+    <input @keyup.enter="submit">
+</div>
+<script>
+    var vm = new Vue({
+        el:'#example',
+        data:{
+            name:'Vue,js'
+        },
+        //在methods对象中定义方法
+        methods:{
+            greet:function () {
+                //this指向vm
+                alert('Hello'+this.name);
+                //'event'是原生dom事件
+                alert(event.target.tagName);
+            }
+        }
+    });
+    var vm2 = new Vue({
+        el:'#example-2',
+        methods:{
+            say:function (msg) {
+                alert(msg);
+            },
+            sayWithEvent:function (msg,event) {
+                alert(msg+' '+event.type);
+            }
+        }
+    });
+    var vm3 = new Vue({
+        el:"#example-3",
+        methods:{
+            dothis:function () {
+                //event.stopPropagation();
+                alert("dothis");
+            },
+            dothat:function () {
+                alert("dothat");
+            },
+            submit:function () {
+                alert("按下回车");
+            }
+
+        }
+    });
+</script>
+</body>
+</html>

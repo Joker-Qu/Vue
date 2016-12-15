@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1 v-my-directive="show">hahaha</h1>
+</div>
+<script>
+    //自定义指令
+    Vue.directive('my-directive',{
+        bind:function () {
+
+        },
+        update:function (newvalue,oldvalue) {
+
+            if (newvalue){
+                this.el.style.display="block"
+            }else {
+                this.el.style.display="none"
+            }
+        },
+        unbind:function () {
+
+        }
+    });
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            show:true
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<!--v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好。-->
+<div id="example">
+    <h1 v-if="warn">Warn</h1>
+    <h1 v-else>Normal</h1>
+    <template v-if="warn">
+        <p>this is a warn message</p>
+        <p>this is a warn message</p>
+        <p>this is a warn message</p>
+    </template>
+    <div v-if="Math.random() > 0.5">
+        Sorry
+    </div>
+    <div v-else>
+        Not sorry
+    </div>
+</div>
+<script>
+    var vm1 = new Vue({
+        el:'#example',
+        data:{
+            warn:true
+        }
+    })
+</script>
+</body>
+</html>

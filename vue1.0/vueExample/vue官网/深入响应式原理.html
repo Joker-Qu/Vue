@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        img{width: 500px}
+    </style>
+</head>
+<body>
+<p>把一个普通对象传给 Vue 实例作为它的 data 选项，Vue.js 将遍历它的属性，用 Object.defineProperty 将它们转为 getter/setter。这</p>
+<img src="../trace%20change.png">
+<p>Vue.js 不能检测到对象属性的添加或删除。</p>
+<p>有办法在实例创建之后添加属性并且让它是响应的。</p>
+<code>
+    vm.$set('b', 2)
+</code>
+<p>可以在数据变化之后立即使用 Vue.nextTick(callback) 。回调在 DOM 更新完成后调用</p>
+<code>
+    Vue.nextTick(function () {
+    vm.$el.textContent === 'new message' // true
+    })
+</code>
+<p>vue.js的计算属性只追踪他的响应依赖 只有当其中一个依赖发生了变化，缓存的结果才无效。因此，只要依赖不发生变化，访问计算属性会直接返回缓存的结果，而不是调用 getter。</p>
+<p>如果希望每次访问计算属性都调用get方法,需要关闭缓存</p>
+<code>
+    computed: {
+    example: {
+    cache: false,
+    get: function () {
+    return Date.now() + this.msg
+    }
+    }
+    }
+</code>
+</body>
+</html>

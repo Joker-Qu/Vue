@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<div id="example">
+    <my-component></my-component>
+    <!--自定义标签不能用在ul,select,table等对内部标签有限制的标签里,对于这种情况,应使用is属性.-->
+    <table>
+        <tr is="my-component" v-for="n in 10" :my-message="n"></tr>
+    </table>
+    <parent-component msg="good boy"></parent-component>
+    <!--对象,数组，是按引用传递。在子组件内修改它会影响父组件的状态，不管是使用哪种绑定类型。-->
+    <child-component :parent-msg="parentMsg"></child-component>
+</div>
+
+<script>
+    //如果我们把一个对象传给data,那么所有MyComponent实例都会共享这个对象,这不是我们想要的
+    //同理,el也是,需要用一个函数返回新对象
+    var MyComponent = Vue.extend({
+        props:['myMessage'],
+        template:'<div>{{ myMessage }}</div>',
+        data:function () {
+            return {a:1}
+        }
+    });
+    Vue.component("my-component",MyComponent);
+    var Parent = Vue.extend({
+        data:function () {
+            return{}
+        },
+        template:'<div><child-component></child-component></div>',
+        components:{
+            'child-component':{
+                props:['msg'],
+                template:'<div>Custom child-component:my father tell me{{ msg }}</div>'
+            }
+        }
+    });
+    Vue.component("parent-component",Parent);
+    //注册语法糖 省略了构造器
+    Vue.component('child-component',{
+        props:['parentMsg'],
+        template:'<div>{{ parentMsg }}</div>'
+    });
+    var vm = new Vue({
+        el:"#example",
+        data:{
+            parentMsg:'parentxxxx'
+        }
+    });
+
+    Vue.component('validateComponent', {
+        props: {
+            // 基础类型检测 （`null` 意思是任何类型都可以）
+            propA: Number,
+            // 多种类型 (1.0.21+)
+            propM: [String, Number],
+            // 必需且是字符串
+            propB: {
+                type: String,
+                required: true
+            },
+            // 数字，有默认值
+            propC: {
+                type: Number,
+                default: 100
+            },
+            // 对象/数组的默认值应当由一个函数返回
+            propD: {
+                type: Object,
+                default: function () {
+                    return { msg: 'hello' }
+                }
+            },
+            // 指定这个 prop 为双向绑定
+            // 如果绑定类型不对将抛出一条警告
+            propE: {
+                twoWay: true
+            },
+            // 自定义验证函数
+            propF: {
+                validator: function (value) {
+                    return value > 10
+                }
+            },
+            // 转换函数（1.0.12 新增）
+            // 在设置值之前转换值
+            propG: {
+                coerce: function (val) {
+                    return val + '' // 将值转换为字符串
+                }
+            },
+            propH: {
+                coerce: function (val) {
+                    return JSON.parse(val) // 将 JSON 字符串转换为对象
+                }
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

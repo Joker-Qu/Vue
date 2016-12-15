@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+    <style>
+        #app{width: 200px}
+        .btn_dft{width: 90%;height:100px;display:inline-block;margin: 0 auto;color: white;background: orange}
+        .btn_gray{background: grey}
+    </style>
+</head>
+<body>
+<template id="sumbitbtnTpl">
+    <button :class="[btn_dft, issubmit ? btn_gray : '']" @click="notify">提交</button>
+</template>
+<div id="app">
+    <submitbtn :issubmit="issubmit"  @child-msg="handleIt"></submitbtn>
+</div>
+<script>
+    var mySubmitBtn = Vue.extend({
+        props:['issubmit'],
+        template:'#sumbitbtnTpl',
+        data:function () {
+            return {btn_dft:'btn_dft',btn_gray:'btn_gray'}
+        },
+        methods:{
+            notify:function () {
+                this.$dispatch('child-msg', this.issubmit);
+            }
+        }
+    });
+    Vue.component("submitbtn",mySubmitBtn);
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            issubmit:false
+        },
+        methods:{
+            handleIt:function (msg) {
+                console.log(msg);
+                this.issubmit= !msg;
+            }
+        }
+    });
+</script>
+</body>
+</html>

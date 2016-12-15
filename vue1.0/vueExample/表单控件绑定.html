@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单控件绑定</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="d1">
+<span>Message is:{{ message }}</span>
+<br>
+    <!--双向绑定-->
+    <input type="text" v-model="message" placeholder="edit me">
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+</div>
+
+<div id="d2">
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames | json }}</span>
+</div>
+
+<div id="d3">
+    <input type="radio" id="one" value="One" v-model="picked">
+    <label for="one">One</label>
+    <br>
+    <input type="radio" id="two" value="Two" v-model="picked">
+    <label for="two">Two</label>
+    <br>
+    <span>Picked: {{ picked }}</span>
+</div>
+
+<div id="d4">
+    <select v-modle="selected">
+        <option selected>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <span>Selected:{{ selected }}</span>
+</div>
+
+<div id="d5">
+    <select v-model="selected" multiple>
+        <option selected>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <br>
+    <span>Selected: {{ selected | json }}</span>
+</div>
+
+<div id="d6">
+    <select v-model="selected">
+        <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+        </option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+</div>
+
+<div id="d7">
+    <input type="checkbox" v-model="toggle" v-bind:true-value="a" v-bind:false-value="b">
+    <span>{{ toggle }}</span>
+    <input type="radio" v-model="pick" v-bind:value="a">
+    <span>{{ pick }}</span>
+</div>
+</body>
+<script>
+    var vm1 = new Vue({
+        el:'#d1',
+        data:{
+            message:"hello",
+            checked:true
+        }
+    });
+    var vm2 = new Vue({
+        el:'#d2',
+        data:{
+            checkedNames:[]
+        }
+    });
+    var vm3 = new Vue({
+        el:'#d3',
+        data:{
+            picked:" "
+        }
+    });
+    var vm4 = new Vue({
+        el:'#d4',
+        data:{
+            selected:" "
+        }
+    });
+    var vm5 = new Vue({
+        el:'#d5',
+        data:{
+            selected:[]
+        }
+    });
+    var vm6 = new Vue({
+        el:'#d6',
+        data:{
+            selected: 'A',
+            options:[
+                {text:'one',value:'A'},
+                {text:'TWO',value:'B'},
+                {text:'three',value:'C'},
+            ]
+        }
+    });
+    var vm7 = new Vue({
+        data:{
+            toggle:'a item',
+            a:"a item",
+            b:"b item",
+            pick:"picking"
+        }
+    })
+</script>
+</html>

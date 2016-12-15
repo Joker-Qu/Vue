@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+<!-- 只当事件在该元素本身（而不是子元素）触发时触发回调 -->
+<div id="example" @click.self="clickDiv">
+    <button @click="greet">Greet</button>
+    <button @click="say('hi',$event)">内联</button>
+    <!-- 阻止单击事件冒泡 -->
+    <a @click.stop="dothis">dothis</a>
+    <!-- 修饰符可以串联 -->
+    <form @sumbit.prevent.stop="dothat">
+        <!--释放enter按键-->
+        <input @keyup.enter="submit">
+    </form>
+</div>
+<script>
+    var vm = new Vue({
+        el:"#example",
+        data:{
+            name:'Vue.js'
+        },
+        methods:{
+            greet:function (event) {
+                alert('Hello'+this.name);
+                //event是原生dom事件
+                alert(event.target.tagName)
+            },
+            say:function (msg,event) {
+                alert(event.target.tagName+msg);
+            }
+        }
+    });
+    //vm.greet()
+</script>
+</body>
+</html>
